@@ -4,16 +4,30 @@
   "description": "Sass variable loader module for webpack",
   "main": "dist/index.js",
   "scripts": {
+    "clean": "rimraf dist",
     "build": "babel ./src -d ./dist",
-    "test": "mocha --compilers js:babel-core/register"
+    "test": "mocha --compilers js:babel-core/register",
+    "lint": "eslint --ext=.js ./src",
+    "prepush": "npm run lint && npm run test",
+    "prepublish": "npm run build",
+    "postpublish": "rimraf dist && git push --follow-tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nordnet/sass-variable-loader"
   },
   "keywords": [
+    "nordnet",
     "sass",
     "variable",
     "loader"
   ],
   "author": "Gustaf Zetterlund <gustaf.zetterlund@nordnet.se>",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nordnet/sass-variable-loader/issues"
+  },
+  "homepage": "https://github.com/nordnet/sass-variable-loader/#readme",
   "dependencies": {
     "loader-utils": "^0.2.12",
     "lodash": "^3.10.1",
@@ -27,6 +41,8 @@
     "chai": "^3.4.1",
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^3.1.0",
-    "mocha": "^2.3.4"
+    "husky": "^0.10.2",
+    "mocha": "^2.3.4",
+    "rimraf": "^2.5.0"
   }
 }
