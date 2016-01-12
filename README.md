@@ -1,7 +1,7 @@
 # Sass variable loader for webpack
 
 > Parses your Sass variables and returns an object containing each variable camelCased and the end value as it would be in CSS.
-
+>
 > That means full support for Sass' lighten, darken, mix etc.
 
 **Input:**
