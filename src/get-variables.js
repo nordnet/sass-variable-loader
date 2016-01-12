@@ -9,10 +9,7 @@ export default function getVariables(content) {
     const name = variable[1].trim();
     const value = variable[2].replace(/!default|!important/g, '').trim();
 
-    variables.push({
-      name: name,
-      value: value,
-    });
+    variables.push({ name, value });
     return;
   });
 
