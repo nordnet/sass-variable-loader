@@ -36,7 +36,7 @@ $gray-lighter:  lighten($gray-base, 93.5%) !default; // #eee
 import variables from 'sass-variable-loader!./_variables.scss';
 // => returns all the variables in _variables.scss as an object with each variable name camelCased
 ```
-**Note:** If you've already defined loaders and preloaders for Sass files via your config, you can override the [loader order](https://webpack.github.io/docs/loaders.html#loader-order) by writing `!!sass-variable-loader!./_variables.scss` to only use the sass-variable-loader for that request.
+**Note:** If you've already defined loaders for Sass files in the configuration, you can override the [loader order](https://webpack.github.io/docs/loaders.html#loader-order) by writing `!!sass-variable-loader!./_variables.scss` to disable all loaders specified in the configuration for that module request.
 
 ## Options
 
