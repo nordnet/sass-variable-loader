@@ -1,9 +1,10 @@
 # Sass variable loader for webpack
 
-Parses your Sass variables and returns an object containing each variable camelCased and the end value as it would be in CSS.
-That means full support for Sass' lighten, darken, mix etc.
+> Parses your Sass variables and returns an object containing each variable camelCased and the end value as it would be in CSS.
 
-Input:
+> That means full support for Sass' lighten, darken, mix etc.
+
+**Input:**
 ``` scss
 $gray-base: #000 !default;
 $gray-darker: lighten($gray-base, 13.5%) !default; // #222
@@ -13,7 +14,7 @@ $gray-light:  lighten($gray-base, 46.7%) !default; // #777
 $gray-lighter:  lighten($gray-base, 93.5%) !default; // #eee
 ```
 
-Result:
+**Result:**
 ``` javascript
 {
   grayBase: '#000',
@@ -27,14 +28,15 @@ Result:
 
 ## Installation
 
-`npm install sass-variable-loader`
+`npm install --save-dev sass-variable-loader`
 
 ## Usage
 
 ``` javascript
 import variables from 'sass-variable-loader!./_variables.scss';
-// => returns all the variables in _variables.scss an object with each variable name camelCased
+// => returns all the variables in _variables.scss as an object with each variable name camelCased
 ```
+**Note:** If you've already defined loaders and preloaders for Sass files via your config, you can override the [loader order](https://webpack.github.io/docs/loaders.html#loader-order) by writing `!!sass-variable-loader!./_variables.scss` to only use the sass-variable-loader for that request.
 
 ## Options
 
@@ -44,7 +46,7 @@ You can pass options to the loader via [query parameters](http://webpack.github.
 
 ``` javascript
 import variables from 'sass-variable-loader?preserveVariableNames!./_variables.scss';
-// => returns all the variables in _variables.scss an object with each variable name left intact
+// => returns all the variables in _variables.scss as an object with each variable name left intact
 ```
 
 ## License
