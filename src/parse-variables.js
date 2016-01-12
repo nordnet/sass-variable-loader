@@ -8,7 +8,7 @@ function constructSassString(variables) {
   return `${ asVariables }\n${ asClasses }`;
 }
 
-export default function parseVariables(variables, opts) {
+export default function parseVariables(variables, opts = {}) {
   const result = sass.renderSync({
     data: constructSassString(variables),
     outputStyle: 'compact',
