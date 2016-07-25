@@ -1,10 +1,9 @@
-// strip-css-comments only handles multiline comments but sass allows single-line
-// style as well. strip-json-comments handles both
-const stripComments = require('strip-json-comments');
+import stripComments from 'strip-json-comments';
 
 export default function getVariables(content) {
   const variableRegex = /\$(.+):\s+(.+);/;
   const variables = [];
+
   stripComments(content).split('\n').forEach(line => {
     const variable = variableRegex.exec(line);
     if (!variable) return;
