@@ -1,11 +1,16 @@
 import loaderUtils from 'loader-utils';
-import getVariables from './get-variables';
-import parseVariables from './parse-variables';
+import thematic from 'sass-thematic';
 
-module.exports = function sassVariableLoader(content) {
-  this.cacheable(); // Flag loader as cacheable
-  const opts = loaderUtils.parseQuery(this.query);
-  const variables = parseVariables(getVariables(content), opts);
+module.exports = function sassVariableLoader() {
+  const callback = this.async();
+  const { resourcePath } = loaderUtils.parseQuery(this.query);
 
-  return `module.exports = ${JSON.stringify(variables)};`;
+  thematic.parseAST({
+    file: resourcePath,
+  }, (err, ast) => {
+    console.log(ast);
+    if (err) return callback(err);
+    callback(null, ast);
+    return ast;
+  });
 };

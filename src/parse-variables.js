@@ -3,13 +3,13 @@ import camelCase from 'lodash/string/camelCase';
 
 function constructSassString(variables) {
   const asVariables = variables
-    .map(variable => `$${ variable.name }: ${ variable.value };`)
+    .map(variable => `$${variable.name}: ${variable.value};`)
     .join('\n');
   const asClasses = variables
-    .map(variable => `.${ variable.name } { value: ${ variable.value } }`)
+    .map(variable => `.${variable.name} { value: ${variable.value} }`)
     .join('\n');
 
-  return `${ asVariables }\n${ asClasses }`;
+  return `${asVariables}\n${asClasses}`;
 }
 
 export default function parseVariables(variables, opts = {}) {
