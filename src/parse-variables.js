@@ -33,5 +33,8 @@ export default function parseVariables(variables, opts = {}) {
       return obj;
     });
 
+  if (!parsedVariables.length) {
+    return {};
+  }
   return Object.assign.apply(this, parsedVariables);
 }
