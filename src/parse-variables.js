@@ -20,10 +20,6 @@ export default function parseVariables(variables, opts = {}) {
 
   const parsedVariables = result.split(/\n/)
     .filter(line => line && line.length)
-    .map(line => {
-      console.log(line);
-      return line;
-    })
     .map(variable => {
       const [, name, value] = /\.(.+) { value: (.+); }/.exec(variable);
       const obj = {};
@@ -37,8 +33,5 @@ export default function parseVariables(variables, opts = {}) {
       return obj;
     });
 
-  if (!parsedVariables.length) {
-    return {};
-  }
   return Object.assign.apply(this, parsedVariables);
 }
