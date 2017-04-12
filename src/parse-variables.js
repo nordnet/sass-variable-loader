@@ -1,4 +1,3 @@
-import sass from 'node-sass';
 import camelCase from 'lodash.camelcase';
 
 function constructSassString(variables) {
@@ -13,7 +12,7 @@ function constructSassString(variables) {
 }
 
 export default function parseVariables(variables, opts = {}) {
-  const result = sass.renderSync({
+  const result = require('node-sass').renderSync({ // eslint-disable-line global-require
     data: constructSassString(variables),
     outputStyle: 'compact',
   }).css.toString();
