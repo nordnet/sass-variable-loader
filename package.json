@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/nordnet/sass-variable-loader/#readme",
   "dependencies": {
-    "loader-utils": "^0.2.12",
+    "loader-utils": "^1.0.3",
     "lodash.camelcase": "^4.1.1",
     "node-sass": "^4.5.0",
     "strip-json-comments": "^2.0.1"
