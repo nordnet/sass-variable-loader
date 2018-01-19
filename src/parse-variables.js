@@ -18,23 +18,13 @@ export default function parseVariables(variables, opts = {}) {
     outputStyle: 'compact',
   }).css.toString();
 
-  const parsedVariables = result.split(/\n/)
+  return result.split(/\n/)
     .filter(line => line && line.length)
-    .map(variable => {
+    .reduce((obj, variable) => {
       const [, name, value] = /\.(.+) { value: (.+); }/.exec(variable);
-      const obj = {};
+      const key = opts.preserveVariableNames ? name : camelCase(name);
 
-      if (opts.preserveVariableNames) {
-        obj[name] = value;
-        return obj;
-      }
-
-      obj[camelCase(name)] = value;
+      obj[key] = value;
       return obj;
-    });
-
-  if (!parsedVariables.length) {
-    return {};
-  }
-  return Object.assign.apply(this, parsedVariables);
+    }, {});
 }
