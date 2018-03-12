@@ -1,6 +1,6 @@
-import loaderUtils from 'loader-utils';
-import getVariables from './get-variables';
-import parseVariables from './parse-variables';
+const loaderUtils = require('loader-utils');
+const getVariables = require('./get-variables');
+const parseVariables = require('./parse-variables');
 
 module.exports = function sassVariableLoader(content) {
   this.cacheable(); // Flag loader as cacheable

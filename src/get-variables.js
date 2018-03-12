@@ -1,6 +1,6 @@
-import stripComments from 'strip-json-comments';
+const stripComments = require('strip-json-comments');
 
-export default function getVariables(content) {
+module.exports = function getVariables(content) {
   const variableRegex = /\$(.+):\s+(.+);?/;
   const variables = [];
 
@@ -16,4 +16,4 @@ export default function getVariables(content) {
   });
 
   return variables;
-}
+};

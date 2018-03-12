@@ -1,5 +1,5 @@
-import sass from 'node-sass';
-import camelCase from 'lodash.camelcase';
+const sass = require('node-sass');
+const camelCase = require('lodash.camelcase');
 
 function constructSassString(variables) {
   const asVariables = variables
@@ -12,7 +12,7 @@ function constructSassString(variables) {
   return `${asVariables}\n${asClasses}`;
 }
 
-export default function parseVariables(variables, opts = {}) {
+module.exports = function parseVariables(variables, opts = {}) {
   const result = sass.renderSync({
     data: constructSassString(variables),
     outputStyle: 'compact',
@@ -37,4 +37,4 @@ export default function parseVariables(variables, opts = {}) {
     return {};
   }
   return Object.assign.apply(this, parsedVariables);
-}
+};

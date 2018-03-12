@@ -2,15 +2,12 @@
   "name": "sass-variable-loader",
   "version": "0.1.2",
   "description": "Sass variable loader module for webpack",
-  "main": "dist/index.js",
+  "main": "src/index.js",
   "scripts": {
-    "clean": "rimraf dist",
-    "build": "babel ./src -d ./dist",
-    "test": "mocha --compilers js:babel-core/register",
+    "test": "mocha",
     "lint": "eslint --ext=.js ./src",
     "prepush": "npm run lint && npm run test",
-    "prepublish": "npm run build",
-    "postpublish": "rimraf dist && git push --follow-tags"
+    "postpublish": "git push --follow-tags"
   },
   "repository": {
     "type": "git",
@@ -35,14 +32,10 @@
     "strip-json-comments": "^2.0.1"
   },
   "devDependencies": {
-    "babel": "^6.3.26",
-    "babel-cli": "^6.4.0",
-    "babel-core": "^6.4.0",
-    "babel-preset-es2015": "^6.3.13",
     "chai": "^3.4.1",
     "eslint": "^3.1.1",
     "eslint-config-airbnb-base": "^5.0.0",
-    "eslint-plugin-import": "^1.11.1",
+    "eslint-plugin-import": "^2.9.0",
     "husky": "^0.10.2",
     "mocha": "^2.3.4",
     "rimraf": "^2.5.0"
