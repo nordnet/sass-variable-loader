@@ -1,19 +1,12 @@
 const stripComments = require('strip-json-comments');
+const { findAll } = require('./utils');
 
-module.exports = function getVariables(content) {
-  const variableRegex = /\$(.+):\s+(.+);?/;
-  const variables = [];
+function getVariables(content) {
+  const variableRegex = /\$([^:$]+):/g;
 
-  stripComments(content).split('\n').forEach(line => {
-    const variable = variableRegex.exec(line);
-    if (!variable) return;
-
-    const name = variable[1].trim();
-    const value = variable[2].replace(/!default|!important/g, '').trim();
-
-    variables.push({ name, value });
-    return;
-  });
-
+  const matches = findAll(stripComments(content), variableRegex);
+  const variables = matches.map(found => found[1].trim());
   return variables;
-};
+}
+
+module.exports = getVariables;

@@ -1,40 +1,45 @@
 const sass = require('node-sass');
-const camelCase = require('lodash.camelcase');
+const { camelCase, uniqueId, last } = require('lodash');
+const getVariables = require('./get-variables');
+const { findAll } = require('./utils');
 
 function constructSassString(variables) {
-  const asVariables = variables
-    .map(variable => `$${variable.name}: ${variable.value};`)
-    .join('\n');
   const asClasses = variables
-    .map(variable => `.${variable.name} { value: ${variable.value} }`)
+    .map(variable => `.${variable} { value: $${variable} }`)
     .join('\n');
 
-  return `${asVariables}\n${asClasses}`;
+  return asClasses;
 }
 
-module.exports = function parseVariables(variables, opts = {}) {
-  const result = sass.renderSync({
-    data: constructSassString(variables),
-    outputStyle: 'compact',
-  }).css.toString();
+function compileToCSS(content, options) {
+  const separator = `.${uniqueId('parser-')} { width: 100% }`;
 
-  const parsedVariables = result.split(/\n/)
-    .filter(line => line && line.length)
-    .map(variable => {
-      const [, name, value] = /\.(.+) { value: (.+); }/.exec(variable);
-      const obj = {};
+  const variables = getVariables(content);
 
-      if (opts.preserveVariableNames) {
-        obj[name] = value;
-        return obj;
-      }
+  const css = sass
+    .renderSync({
+      data: [content, separator, constructSassString(variables)].join('\n'),
+      outputStyle: 'compact',
+      indentedSyntax: Boolean(options.indented),
+    })
+    .css.toString();
 
-      obj[camelCase(name)] = value;
-      return obj;
-    });
+  return last(css.split(separator));
+}
 
-  if (!parsedVariables.length) {
-    return {};
-  }
-  return Object.assign.apply(this, parsedVariables);
+module.exports = function parseVariables(content, options = {}) {
+  const css = compileToCSS(content, options);
+
+  const regex = /\.(.+){\s*value:([^;]+);/g;
+  const matches = findAll(css, regex);
+  const variables = matches.reduce((acc, found) => {
+    const name = found[1].trim();
+    const value = found[2].trim();
+    const key = options.preserveVariableNames ? name : camelCase(name);
+    // eslint-disable-next-line no-param-reassign
+    acc[key] = value;
+    return acc;
+  }, {});
+
+  return variables;
 };

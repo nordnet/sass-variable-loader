@@ -1,11 +1,26 @@
 const loaderUtils = require('loader-utils');
-const getVariables = require('./get-variables');
 const parseVariables = require('./parse-variables');
 
-module.exports = function sassVariableLoader(content) {
-  this.cacheable(); // Flag loader as cacheable
-  const opts = Object.assign({}, loaderUtils.getOptions(this));
-  const variables = parseVariables(getVariables(content), opts);
+/**
+ * Can be used as webpack Loader or directly as a parser
+ *
+ * @param {string} content
+ * @param {object} [passedOptions={}]
+ * @returns string|object
+ */
+function sassVariableLoader(content, passedOptions = {}) {
+  let webpackOptions = {};
+  const isWebpack = this instanceof Object;
+  if (isWebpack) {
+    this.cacheable(); // Flag loader as cacheable
+    webpackOptions = Object.assign({}, loaderUtils.getOptions(this));
+  }
+  const options = Object.assign({}, passedOptions, webpackOptions);
+  const variables = parseVariables(content, options);
 
-  return `module.exports = ${JSON.stringify(variables)};`;
-};
+  return isWebpack
+    ? `module.exports = ${JSON.stringify(variables)};`
+    : variables;
+}
+
+module.exports = sassVariableLoader;
