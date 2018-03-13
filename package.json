@@ -32,6 +32,7 @@
     "strip-json-comments": "^2.0.1"
   },
   "devDependencies": {
+    "element-ui": "^2.2.1",
     "eslint": "^3.19.0",
     "eslint-config-airbnb-base": "^5.0.3",
     "eslint-plugin-import": "^2.9.0",
