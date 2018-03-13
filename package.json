@@ -4,7 +4,7 @@
   "description": "Sass variable loader module for webpack",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --verbose",
     "lint": "eslint --ext=.js ./src",
     "prepush": "npm run lint && npm run test",
     "postpublish": "git push --follow-tags"
@@ -26,14 +26,14 @@
   },
   "homepage": "https://github.com/nordnet/sass-variable-loader/#readme",
   "dependencies": {
-    "loader-utils": "^1.0.3",
+    "loader-utils": "^1.1.0",
     "lodash": "^4.17.5",
-    "node-sass": "^4.5.0",
+    "node-sass": "^4.7.2",
     "strip-json-comments": "^2.0.1"
   },
   "devDependencies": {
-    "eslint": "^3.1.1",
-    "eslint-config-airbnb-base": "^5.0.0",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb-base": "^5.0.3",
     "eslint-plugin-import": "^2.9.0",
     "jest": "^22.4.2",
     "prettier": "^1.11.1"
