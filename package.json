@@ -4,7 +4,7 @@
   "description": "Sass variable loader module for webpack",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "jest",
     "lint": "eslint --ext=.js ./src",
     "prepush": "npm run lint && npm run test",
     "postpublish": "git push --follow-tags"
@@ -37,6 +37,7 @@
     "eslint-config-airbnb-base": "^5.0.0",
     "eslint-plugin-import": "^2.9.0",
     "husky": "^0.10.2",
+    "jest": "^22.4.2",
     "mocha": "^2.3.4",
     "prettier": "^1.11.1",
     "rimraf": "^2.5.0"
