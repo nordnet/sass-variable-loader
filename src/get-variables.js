@@ -3,10 +3,15 @@ const { uniq } = require('lodash');
 const { findAll } = require('./utils');
 
 function getVariables(content) {
-  const variableRegex = /\$([^:$]+):/g;
+  const variableRegex = /\$([^:$})\s]+):([\s(]*)/g;
+
+  const excludeMaps = match => {
+    const afterColon = match[2] || '';
+    return !afterColon.includes('(');
+  };
 
   const matches = findAll(stripComments(content), variableRegex);
-  const variables = matches.map(found => found[1].trim());
+  const variables = matches.filter(excludeMaps).map(found => found[1].trim());
   return uniq(variables);
 }
 
