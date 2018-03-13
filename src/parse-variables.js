@@ -1,7 +1,7 @@
 const sass = require('node-sass');
-const { camelCase, uniqueId, last } = require('lodash');
+const { camelCase, last } = require('lodash');
 const getVariables = require('./get-variables');
-const { findAll } = require('./utils');
+const { findAll, generateId } = require('./utils');
 
 function constructSassString(variables) {
   const asClasses = variables
@@ -12,9 +12,12 @@ function constructSassString(variables) {
 }
 
 function compileToCSS(content, options) {
-  const separator = `.${uniqueId('parser-')} { width: 100% }`;
+  const separator = `.separator-${generateId()} { width: 100% }`;
 
   const variables = getVariables(content);
+  if (variables.length === 0) {
+    return '';
+  }
 
   const css = sass
     .renderSync({
@@ -29,6 +32,9 @@ function compileToCSS(content, options) {
 
 module.exports = function parseVariables(content, options = {}) {
   const css = compileToCSS(content, options);
+  if (!css) {
+    return {};
+  }
 
   const regex = /\.(.+){\s*value:([^;]+);/g;
   const matches = findAll(css, regex);

@@ -10,4 +10,13 @@ function findAll(str, regex) {
   return result;
 }
 
-module.exports = { findAll };
+function generateId() {
+  return Math.random()
+    .toString(36)
+    .slice(-8);
+}
+
+module.exports = {
+  findAll,
+  generateId,
+};
