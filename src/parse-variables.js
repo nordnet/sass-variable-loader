@@ -1,4 +1,4 @@
-const sass = require('node-sass');
+const nodeSass = require('node-sass');
 const { camelCase, last } = require('lodash');
 const getVariables = require('./get-variables');
 const { findAll, generateId } = require('./utils');
@@ -19,9 +19,11 @@ function compileToCSS(content, options) {
     return '';
   }
 
-  const css = sass
+  const constructedSass = constructSassString(variables);
+
+  const css = nodeSass
     .renderSync({
-      data: [content, separator, constructSassString(variables)].join('\n'),
+      data: [content, separator, constructedSass].join('\n'),
       outputStyle: 'compact',
       indentedSyntax: Boolean(options.indented),
     })
