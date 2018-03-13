@@ -1,4 +1,3 @@
-/* eslint-disable max-len, import/no-extraneous-dependencies, no-console */
 const { readFileSync } = require('fs');
 const pathBuilder = require('path');
 const rootDir = require('../../root-dir');
