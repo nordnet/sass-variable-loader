@@ -38,7 +38,6 @@ function compileToCSS(content, options) {
   if (options.cwd) {
     process.chdir(options.cwd);
   }
-
   const css = nodeSass
     .renderSync({
       data: [content, separator, evaluationSass].join('\n'),
