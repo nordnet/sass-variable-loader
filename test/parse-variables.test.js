@@ -1,72 +1,71 @@
 /* eslint-disable import/no-extraneous-dependencies, max-len */
-const { expect } = require('chai');
 const data = require('./data.json');
 const parseVariables = require('../src/parse-variables');
 
-context('without comments', () => {
+describe('without comments', () => {
   const sass = data.sass.withoutComments;
 
   describe('parseVariables()', () => {
-    it('should return an object with the key grayBase', () => {
+    test('should return an object with the key grayBase', () => {
       const result = parseVariables(sass);
-      expect(result).to.be.a('object');
-      expect(result).to.include.keys('grayBase');
+      expect(typeof result).toBe('object');
+      expect(result).toHaveProperty('grayBase');
     });
   });
 
   describe('parseVariables({ preserveVariableNames: true })', () => {
-    it('should return an object with the key gray-base', () => {
+    test('should return an object with the key gray-base', () => {
       const result = parseVariables(sass, { preserveVariableNames: true });
-      expect(result).to.be.a('object');
-      expect(result).to.include.keys('gray-base');
+      expect(typeof result).toBe('object');
+      expect(result).toHaveProperty('gray-base');
     });
   });
 });
 
-context('with comments', () => {
+describe('with comments', () => {
   const sass = data.sass.withComments;
 
   describe('parseVariables()', () => {
-    it('should return an object with the key one', () => {
+    test('should return an object with the key one', () => {
       const result = parseVariables(sass);
-      expect(result).to.be.a('object');
-      expect(result).to.include.keys('one');
+      expect(typeof result).toBe('object');
+      expect(result).toHaveProperty('one');
     });
-    it('should not return an object with the key y', () => {
+    test('should not return an object with the key y', () => {
       const result = parseVariables(sass);
-      expect(result).to.be.a('object');
-      expect(result).to.not.include.keys('y');
+      expect(typeof result).toBe('object');
+      expect(result).not.toHaveProperty('y');
     });
   });
 });
 
-context('indented sass', () => {
+describe('indented sass', () => {
   const sass = data.sass.indented;
 
   describe('parseVariables()', () => {
-    it('should return an object with the key one', () => {
+    test('should return an object with the key one', () => {
       const result = parseVariables(sass, { indented: true });
-      expect(result).to.be.a('object');
-      expect(result).to.include.keys('one');
+      expect(typeof result).toBe('object');
+      expect(result).toHaveProperty('one');
     });
   });
 });
 
-context('empty sass-file', () => {
-  describe('getVariables()', () => {
+describe('empty sass-file', () => {
+  describe('parseVariables()', () => {
     function testFn() {
       const sass = '';
       return parseVariables(sass);
     }
 
-    it('should not throw', () => {
-      expect(testFn).to.not.throw(TypeError);
+    test('should not throw', () => {
+      expect(testFn).not.toThrowError(TypeError);
     });
 
-    it('should be an empty object', () => {
+    test('should be an empty object', () => {
       const variables = testFn();
-      expect(variables).to.be.an('object');
-      expect(Object.keys(variables)).to.have.length(0);
+      expect(typeof variables).toBe('object');
+      expect(Object.keys(variables)).toHaveLength(0);
     });
   });
 });
