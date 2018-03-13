@@ -16,12 +16,25 @@ function getDerivedVariablesSass(file) {
 }
 
 describe('bulma', () => {
-  test('derived-variables.sass should match a snapshot', () => {
-    const cwd = pathBuilder.join(bulmaRoot, 'utilities');
-    const sass = getDerivedVariablesSass(
-      pathBuilder.join(cwd, 'derived-variables.sass'),
+  const cwd = pathBuilder.join(bulmaRoot, 'utilities');
+  const sass = getDerivedVariablesSass(
+    pathBuilder.join(cwd, 'derived-variables.sass'),
+  );
+  const options = { indented: true, cwd };
+
+  test('derived-variables should match a snapshot', () => {
+    const variables = parseVariables(sass, options);
+
+    expect(typeof variables).toBe('object');
+    expect(Object.keys(variables).length).toBeGreaterThan(20);
+    expect(variables).toMatchSnapshot();
+  });
+
+  test('derived-variables with preserved variables names', () => {
+    const variables = parseVariables(
+      sass,
+      Object.assign({}, options, { preserveVariableNames: true }),
     );
-    const variables = parseVariables(sass, { indented: true, cwd });
 
     expect(typeof variables).toBe('object');
     expect(Object.keys(variables).length).toBeGreaterThan(20);

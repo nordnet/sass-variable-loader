@@ -13,14 +13,23 @@ const themeSrcPath = pathBuilder.join(
 );
 
 describe('element-ui', () => {
-  test('var.scss should yield a large object', () => {
-    const sass = readFileSync(
-      pathBuilder.join(themeSrcPath, 'common', 'var.scss'),
-      'utf8',
-    );
-    const variables = parseVariables(sass);
+  const varScss = readFileSync(
+    pathBuilder.join(themeSrcPath, 'common', 'var.scss'),
+    'utf8',
+  );
+
+  test('var.scss should match snapshot', () => {
+    const variables = parseVariables(varScss);
     expect(typeof variables).toBe('object');
     expect(Object.keys(variables).length).toBeGreaterThan(100);
+    expect(variables).toMatchSnapshot();
+  });
+
+  test('var.scss with option preserveVariableNames should match snapshot', () => {
+    const variables = parseVariables(varScss, { preserveVariableNames: true });
+    expect(typeof variables).toBe('object');
+    expect(Object.keys(variables).length).toBeGreaterThan(100);
+    expect(variables).toMatchSnapshot();
   });
 
   test("mixins.scss shouldn't throw", () => {

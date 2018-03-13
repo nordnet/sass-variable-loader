@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`bulma derived-variables.sass should yield a large object 1`] = `
+exports[`bulma derived-variables should match a snapshot 1`] = `
 Object {
   "background": "whitesmoke",
   "blueInvert": "#fff",
@@ -49,5 +49,57 @@ Object {
   "warning": "#ffdd57",
   "warningInvert": "rgba(0, 0, 0, 0.7)",
   "yellowInvert": "rgba(0, 0, 0, 0.7)",
+}
+`;
+
+exports[`bulma derived-variables with preserved variables names 1`] = `
+Object {
+  "background": "whitesmoke",
+  "blue-invert": "#fff",
+  "border": "#dbdbdb",
+  "border-hover": "#b5b5b5",
+  "code": "#ff3860",
+  "code-background": "whitesmoke",
+  "cyan-invert": "#fff",
+  "danger": "#ff3860",
+  "danger-invert": "#fff",
+  "dark": "#363636",
+  "dark-invert": "whitesmoke",
+  "family-code": "monospace",
+  "green-invert": "#fff",
+  "info": "#209cee",
+  "info-invert": "#fff",
+  "light": "whitesmoke",
+  "light-invert": "#363636",
+  "link": "#3273dc",
+  "link-active": "#363636",
+  "link-active-border": "#4a4a4a",
+  "link-focus": "#363636",
+  "link-focus-border": "#3273dc",
+  "link-hover": "#363636",
+  "link-hover-border": "#b5b5b5",
+  "link-invert": "#fff",
+  "link-visited": "#b86bff",
+  "orange-invert": "#fff",
+  "pre": "#4a4a4a",
+  "pre-background": "whitesmoke",
+  "primary": "#00d1b2",
+  "primary-invert": "#fff",
+  "purple-invert": "#fff",
+  "red-invert": "#fff",
+  "size-large": "1.5rem",
+  "size-medium": "1.25rem",
+  "size-normal": "1rem",
+  "size-small": "0.75rem",
+  "success": "#23d160",
+  "success-invert": "#fff",
+  "text": "#4a4a4a",
+  "text-invert": "#fff",
+  "text-light": "#7a7a7a",
+  "text-strong": "#363636",
+  "turquoise-invert": "#fff",
+  "warning": "#ffdd57",
+  "warning-invert": "rgba(0, 0, 0, 0.7)",
+  "yellow-invert": "rgba(0, 0, 0, 0.7)",
 }
 `;
