@@ -1,25 +1,43 @@
+/* eslint-disable max-len */
 const nodeSass = require('node-sass');
 const { camelCase, last } = require('lodash');
 const getVariables = require('./get-variables');
 const { findAll, generateId } = require('./utils');
 
-function constructSassString(variables) {
+function constructSassString(variables, options) {
   const asClasses = variables
-    .map(variable => `.${variable} { value: $${variable} }`)
+    .map(variable => {
+      if (options.indented) {
+        return [
+          `@if variable-exists('${variable}') and type-of($${variable}) != map and type-of($${variable}) != list`,
+          `  .${variable}`,
+          `    value: $${variable}`,
+        ].join('\n');
+      }
+      return `
+          @if variable-exists('${variable}')
+            and type-of($${variable}) != map
+            and type-of($${variable}) != list {
+              .${variable} { value: $${variable} };
+          }`;
+    })
     .join('\n');
 
   return asClasses;
 }
 
 function compileToCSS(content, options) {
-  const separator = `.separator-${generateId()} { width: 100% }`;
+  const separator = options.indented
+    ? [`.separator-${generateId()}`, '  width: 100%'].join('\n')
+    : `.separator-${generateId()} { width: 100% }`;
 
   const variables = getVariables(content);
-  if (variables.length === 0) {
-    return '';
-  }
 
-  const constructedSass = constructSassString(variables);
+  const constructedSass = constructSassString(variables, options);
+
+  if (options.cwd) {
+    process.chdir(options.cwd);
+  }
 
   const css = nodeSass
     .renderSync({

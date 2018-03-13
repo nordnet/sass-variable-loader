@@ -8,19 +8,12 @@ const parseVariables = require('./parse-variables');
  * @param {object} [passedOptions={}]
  * @returns string|object
  */
-function sassVariableLoader(content, passedOptions = {}) {
-  let webpackOptions = {};
-  const isWebpack = this instanceof Object;
-  if (isWebpack) {
-    this.cacheable(); // Flag loader as cacheable
-    webpackOptions = Object.assign({}, loaderUtils.getOptions(this));
-  }
-  const options = Object.assign({}, passedOptions, webpackOptions);
+function sassVariableLoader(content) {
+  this.cacheable(); // Flag loader as cacheable
+  const options = Object.assign({}, loaderUtils.getOptions(this));
   const variables = parseVariables(content, options);
 
-  return isWebpack
-    ? `module.exports = ${JSON.stringify(variables)};`
-    : variables;
+  return `module.exports = ${JSON.stringify(variables)};`;
 }
 
 module.exports = sassVariableLoader;

@@ -24,12 +24,10 @@ describe('element-ui', () => {
     expect(Object.keys(variables).length).toBeGreaterThan(100);
   });
 
-  test("index.scss shouldn't throw", () => {
-    const sass = readFileSync(
-      pathBuilder.join(themeSrcPath, 'index.scss'),
-      'utf8',
-    );
-    const variables = parseVariables(sass);
+  test("mixins.scss shouldn't throw", () => {
+    const cwd = pathBuilder.join(themeSrcPath, 'mixins');
+    const sass = readFileSync(pathBuilder.join(cwd, 'mixins.scss'), 'utf8');
+    const variables = parseVariables(sass, { cwd });
     expect(typeof variables).toBe('object');
   });
 });
