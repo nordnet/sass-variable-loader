@@ -4,7 +4,7 @@ const { camelCase, last } = require('lodash');
 const getVariables = require('./get-variables');
 const { findAll, generateId } = require('./utils');
 
-function constructSassString(variables, options) {
+function constructEvaluationSass(variables, options) {
   const asClasses = variables
     .map(variable => {
       if (options.indented) {
@@ -33,7 +33,7 @@ function compileToCSS(content, options) {
 
   const variables = getVariables(content);
 
-  const constructedSass = constructSassString(variables, options);
+  const evaluationSass = constructEvaluationSass(variables, options);
 
   if (options.cwd) {
     process.chdir(options.cwd);
@@ -41,7 +41,7 @@ function compileToCSS(content, options) {
 
   const css = nodeSass
     .renderSync({
-      data: [content, separator, constructedSass].join('\n'),
+      data: [content, separator, evaluationSass].join('\n'),
       outputStyle: 'compact',
       indentedSyntax: Boolean(options.indented),
     })
@@ -56,7 +56,7 @@ module.exports = function parseVariables(content, options = {}) {
     return {};
   }
 
-  const regex = /\.(.+){\s*value:([^;]+);/g;
+  const regex = /\.([^\s]+)[\s{]+value:([^;]+)[};];?.*$/gm;
   const matches = findAll(css, regex);
   const variables = matches.reduce((acc, found) => {
     const name = found[1].trim();
