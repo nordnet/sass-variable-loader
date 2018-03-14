@@ -13,20 +13,26 @@ const config = {
   },
 };
 
-function compile() {
+function cleanDistDirectory() {
   return new Promise((resolve, reject) => {
     rm(config.output.path, err => {
       if (err) {
         reject(err);
         return;
       }
-      webpack(config).run(compileErr => {
-        if (compileErr) {
-          reject(compileErr);
-          return;
-        }
-        resolve();
-      });
+      resolve();
+    });
+  });
+}
+
+function compile() {
+  return new Promise((resolve, reject) => {
+    webpack(config).run(err => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve();
     });
   });
 }
@@ -34,6 +40,7 @@ function compile() {
 function testFn() {
   test('variables should be a none-empty object', async () => {
     try {
+      await cleanDistDirectory();
       await compile();
     } catch (error) {
       throw error;
