@@ -1,4 +1,8 @@
 /* eslint-disable max-len, import/no-unresolved */
-const variables = require('!!../../src!/home/oleg/Documents/js/github/sass-variable-loader/node_modules/element-ui/packages/theme-chalk/src/common/var.scss');
+const element = require('!!../../src!element-ui/packages/theme-chalk/src/common/var.scss');
+const bulma = require('!!../../src!bulma/sass/utilities/initial-variables.sass');
 
-module.exports = variables;
+module.exports = {
+  element,
+  bulma,
+};

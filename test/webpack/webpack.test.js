@@ -2,6 +2,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const rm = require('rimraf');
+const { delay } = require('../../src/utils');
 
 const config = {
   entry: './main.js',
@@ -37,19 +38,26 @@ function compile() {
   });
 }
 
-function testFn() {
-  test('variables should be a none-empty object', async () => {
+describe('webpack', () => {
+  let vars = {};
+  beforeAll(async () => {
     try {
       await cleanDistDirectory();
       await compile();
     } catch (error) {
       throw error;
     }
+    await delay(200);
     // eslint-disable-next-line global-require, import/no-unresolved
-    const variables = require('./dist/variables');
-    expect(typeof variables).toBe('object');
-    expect(Object.keys(variables).length).toBeGreaterThan(20);
+    vars = require('./dist/variables');
   });
-}
 
-describe('webpack', testFn);
+  test('element variables should be a none-empty object', () => {
+    expect(typeof vars.element).toBe('object');
+    expect(Object.keys(vars.element).length).toBeGreaterThan(20);
+  });
+  test('bulma variables should be a none-empty object', () => {
+    expect(typeof vars.bulma).toBe('object');
+    expect(Object.keys(vars.bulma).length).toBeGreaterThan(20);
+  });
+});
