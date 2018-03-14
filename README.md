@@ -43,13 +43,14 @@ import variables from '!!sass-variable-parser?-camelCase!./_variables.scss';
 ## Usage as a parser
 
 ```javascript
+const path = require('path');
 const { parse } = require('sass-variable-parser');
 
 const options = {
   // defaults to true
   camelCase: false,
   // optional, only if there are @imports with relative paths
-  cwd: 'bulma/sass/utilities',
+  cwd: path.resolve(__dirname, 'node_modules/bulma/sass/utilities'),
   // true means indented sass syntax, defaults to false ('scss' syntax)
   indented: true,
 };
@@ -76,7 +77,7 @@ $family-primary: $family-monospace`,
 }
 ```
 
-Check out [`test`]() folder for more exmaples
+Check out `test` folder for more exmaples
 
 ## Options
 
