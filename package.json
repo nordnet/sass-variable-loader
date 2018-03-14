@@ -1,7 +1,7 @@
 {
-  "name": "sass-variable-loader",
+  "name": "sass-variable-parser",
   "version": "0.1.2",
-  "description": "Sass variable loader module for webpack",
+  "description": "Sass variable parser and webpack loader",
   "main": "src/index.js",
   "scripts": {
     "test": "jest --verbose",
@@ -11,20 +11,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nordnet/sass-variable-loader"
+    "url": "https://github.com/mleg/sass-variable-parser"
   },
-  "keywords": [
-    "nordnet",
-    "sass",
-    "variable",
-    "loader"
-  ],
-  "author": "Gustaf Zetterlund <gustaf.zetterlund@nordnet.se>",
+  "keywords": ["nordnet", "sass", "variable", "loader"],
+  "author": "Oleg Maslov <maslovbox@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nordnet/sass-variable-loader/issues"
+    "url": "https://github.com/mleg/sass-variable-parser/issues"
   },
-  "homepage": "https://github.com/nordnet/sass-variable-loader/#readme",
+  "homepage": "https://github.com/mleg/sass-variable-parser/#readme",
   "dependencies": {
     "loader-utils": "^1.1.0",
     "lodash": "^4.17.5",
