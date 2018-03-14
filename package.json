@@ -1,6 +1,6 @@
 {
   "name": "sass-variable-parser",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "Sass variable parser and webpack loader",
   "main": "src/index.js",
   "scripts": {
