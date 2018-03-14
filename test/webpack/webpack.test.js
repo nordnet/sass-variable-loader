@@ -56,8 +56,9 @@ describe('webpack', () => {
     expect(typeof vars.element).toBe('object');
     expect(Object.keys(vars.element).length).toBeGreaterThan(20);
   });
-  test('bulma variables should be a none-empty object', () => {
+  test('bulma variables should match snapshot', () => {
     expect(typeof vars.bulma).toBe('object');
     expect(Object.keys(vars.bulma).length).toBeGreaterThan(20);
+    expect(vars.bulma).toMatchSnapshot();
   });
 });

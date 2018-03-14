@@ -9,15 +9,14 @@ function constructEvaluationSass(variables, options) {
     .map(variable => {
       if (options.indented) {
         return [
-          `@if variable-exists('${variable}') and type-of($${variable}) != map and type-of($${variable}) != list`,
+          `@if variable-exists('${variable}') and type-of($${variable}) != map`,
           `  .${variable}`,
           `    value: $${variable}`,
         ].join('\n');
       }
       return `
           @if variable-exists('${variable}')
-            and type-of($${variable}) != map
-            and type-of($${variable}) != list {
+            and type-of($${variable}) != map {
               .${variable} { value: $${variable} };
           }`;
     })
@@ -49,7 +48,9 @@ function compileToCSS(content, options) {
   return last(css.split(separator));
 }
 
-module.exports = function parseVariables(content, options = {}) {
+module.exports = function parseVariables(content, passedOptions = {}) {
+  const options = Object.assign({ camelCase: true }, passedOptions);
+
   const css = compileToCSS(content, options);
   if (!css) {
     return {};
@@ -60,7 +61,7 @@ module.exports = function parseVariables(content, options = {}) {
   const variables = matches.reduce((acc, found) => {
     const name = found[1].trim();
     const value = found[2].trim();
-    const key = options.preserveVariableNames ? name : camelCase(name);
+    const key = options.camelCase ? camelCase(name) : name;
     // eslint-disable-next-line no-param-reassign
     acc[key] = value;
     return acc;

@@ -14,7 +14,7 @@ Object {
 }
 `;
 
-exports[`parseVariables() without comments should contain "gray-base" when options={"preserveVariableNames":true} 1`] = `
+exports[`parseVariables() without comments should contain "gray-base" when options={"camelCase":false} 1`] = `
 Object {
   "gray": "#555555",
   "gray-base": "#000",

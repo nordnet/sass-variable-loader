@@ -25,8 +25,8 @@ describe('element-ui', () => {
     expect(variables).toMatchSnapshot();
   });
 
-  test('var.scss with option preserveVariableNames should match snapshot', () => {
-    const variables = parseVariables(varScss, { preserveVariableNames: true });
+  test('var.scss with camelCase=false should match snapshot', () => {
+    const variables = parseVariables(varScss, { camelCase: false });
     expect(typeof variables).toBe('object');
     expect(Object.keys(variables).length).toBeGreaterThan(100);
     expect(variables).toMatchSnapshot();

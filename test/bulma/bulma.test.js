@@ -1,7 +1,7 @@
 const { readFileSync } = require('fs');
 const pathBuilder = require('path');
 const rootDir = require('../../root-dir');
-const parseVariables = require('../../src/parse-variables');
+const { parse } = require('../../src');
 
 const bulmaRoot = pathBuilder.join(rootDir, 'node_modules', 'bulma', 'sass');
 
@@ -23,7 +23,7 @@ describe('bulma', () => {
   const options = { indented: true, cwd };
 
   test('derived-variables should match a snapshot', () => {
-    const variables = parseVariables(sass, options);
+    const variables = parse(sass, options);
 
     expect(typeof variables).toBe('object');
     expect(Object.keys(variables).length).toBeGreaterThan(20);
@@ -31,9 +31,9 @@ describe('bulma', () => {
   });
 
   test('derived-variables with preserved variables names', () => {
-    const variables = parseVariables(
+    const variables = parse(
       sass,
-      Object.assign({}, options, { preserveVariableNames: true }),
+      Object.assign({}, options, { camelCase: false }),
     );
 
     expect(typeof variables).toBe('object');

@@ -1,19 +1,19 @@
-const parseVariables = require('../../src/parse-variables');
+const { parse } = require('../../src');
 const units = require('./units.json');
 
 const tests = {
   withoutComments({ sass }) {
     test('should contain "grayBase"', () => {
-      const result = parseVariables(sass);
+      const result = parse(sass);
       expect(typeof result).toBe('object');
       expect(result).toHaveProperty('grayBase');
       expect(result).toMatchSnapshot();
     });
 
-    const options = { preserveVariableNames: true };
+    const options = { camelCase: false };
     const optionsStr = JSON.stringify(options);
     test(`should contain "gray-base" when options=${optionsStr}`, () => {
-      const result = parseVariables(sass, options);
+      const result = parse(sass, options);
       expect(typeof result).toBe('object');
       expect(result).toHaveProperty('gray-base');
       expect(result).toMatchSnapshot();
@@ -21,7 +21,7 @@ const tests = {
   },
 
   withComments({ sass }) {
-    const result = parseVariables(sass);
+    const result = parse(sass);
 
     test('should return an object with a key "one"', () => {
       expect(typeof result).toBe('object');
@@ -35,7 +35,7 @@ const tests = {
   },
 
   indentedSass({ sass }) {
-    const result = parseVariables(sass, { indented: true });
+    const result = parse(sass, { indented: true });
 
     test('should return an object with a key "one"', () => {
       expect(typeof result).toBe('object');
@@ -45,7 +45,7 @@ const tests = {
   },
 
   emptySassFile({ sass }) {
-    const result = parseVariables(sass);
+    const result = parse(sass);
 
     test('should be an empty object', () => {
       expect(result).toEqual({});

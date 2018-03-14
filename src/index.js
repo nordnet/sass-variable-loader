@@ -5,7 +5,7 @@ function sassVariableLoader(content) {
   this.cacheable(); // Flag loader as cacheable
 
   const options = {
-    preserveVariableNames: false,
+    camelCase: true,
     cwd: this.context,
     indented: this.resourcePath.endsWith('.sass'),
   };
@@ -15,5 +15,7 @@ function sassVariableLoader(content) {
 
   return `module.exports = ${JSON.stringify(variables, null, 2)};`;
 }
+
+sassVariableLoader.parse = (sass, options) => parseVariables(sass, options);
 
 module.exports = sassVariableLoader;
