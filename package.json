@@ -13,7 +13,12 @@
     "type": "git",
     "url": "https://github.com/nordnet/sass-variable-loader"
   },
-  "keywords": ["nordnet", "sass", "variable", "loader"],
+  "keywords": [
+    "nordnet",
+    "sass",
+    "variable",
+    "loader"
+  ],
   "author": "Gustaf Zetterlund <gustaf.zetterlund@nordnet.se>",
   "license": "MIT",
   "bugs": {
@@ -33,6 +38,8 @@
     "eslint-config-airbnb-base": "^5.0.3",
     "eslint-plugin-import": "^2.9.0",
     "jest": "^22.4.2",
-    "prettier": "^1.11.1"
+    "prettier": "^1.11.1",
+    "rimraf": "^2.6.2",
+    "webpack": "^4.1.1"
   }
 }
