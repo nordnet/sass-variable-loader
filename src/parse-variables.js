@@ -55,7 +55,7 @@ module.exports = function parseVariables(content, options = {}) {
     return {};
   }
 
-  const regex = /\.([^\s]+)[\s{]+value:([^;]+)[};];?.*$/gm;
+  const regex = /\.([^\s]+)[\s{]+value:([^;}]+).*$/gm;
   const matches = findAll(css, regex);
   const variables = matches.reduce((acc, found) => {
     const name = found[1].trim();
