@@ -2,3 +2,10 @@
 node_modules
 npm-debug.log
 .vscode
+test
+.eslintrc
+.gitignore
+.prettierrc.yml
+CHANGELOG.md
+jest.config.js
+root-dir.js
