@@ -13,7 +13,12 @@
     "type": "git",
     "url": "https://github.com/mleg/sass-variable-parser"
   },
-  "keywords": ["nordnet", "sass", "variable", "loader"],
+  "keywords": [
+    "nordnet",
+    "sass",
+    "variable",
+    "loader"
+  ],
   "author": "Oleg Maslov <maslovbox@gmail.com>",
   "license": "MIT",
   "bugs": {
@@ -21,6 +26,7 @@
   },
   "homepage": "https://github.com/mleg/sass-variable-parser/#readme",
   "dependencies": {
+    "css": "^2.2.1",
     "loader-utils": "^1.1.0",
     "lodash": "^4.17.5",
     "node-sass": "^4.7.2",
