@@ -25,26 +25,26 @@ Parses **variables** from **sass**, evaluates their values with [node-sass](http
 
 ## Installation
 
-`npm i sass-variable-parser -D`
+`npm i sass-variable-loader -D`
 
 ## Usage as a Webpack loader
 
 ```javascript
-import variables from '!!sass-variable-parser!./_variables.scss';
+import variables from '!!sass-variable-loader!./_variables.scss';
 // => returns all the variables in _variables.scss as an object with each variable name camelCased
 ```
 
 Without camel-casing:
 
 ```javascript
-import variables from '!!sass-variable-parser?-camelCase!./_variables.scss';
+import variables from '!!sass-variable-loader?-camelCase!./_variables.scss';
 ```
 
 ## Usage as a parser
 
 ```javascript
 const path = require('path');
-const { parse } = require('sass-variable-parser');
+const { parse } = require('sass-variable-loader');
 
 const options = {
   // defaults to true
