@@ -91,10 +91,6 @@ When using as a parser pass options object as the second parameter to `parse` me
 | cwd       | Webpack's context when used as loader | Current working directory from which @import paths are calculated. Typically not needed when used as loader      |
 | indented  | false                                 | Whether the loaded sass is in indented syntax or not. When used as loader is auto-calculated from file extension |
 
-## Why fork
-
-It's a complete rewrite of the original `sass-variable-loader`. That had many bugs and seemed not to be actively maintained. But thanks for the directions anyway!
-
 ## License
 
 MIT (http://www.opensource.org/licenses/mit-license.php)
