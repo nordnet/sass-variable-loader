@@ -1,71 +1,41 @@
 /* eslint-disable max-len */
-const nodeSass = require('node-sass');
-const { camelCase, last } = require('lodash');
-const getVariables = require('./get-variables');
-const { findAll, generateId } = require('./utils');
+const { parse } = require('css');
+const { camelCase, get } = require('lodash');
+const getVariableNames = require('./get-variable-names');
+const renderValuesToCSS = require('./render-values-to-css');
 
-function constructEvaluationSass(variables, options) {
-  const asClasses = variables
-    .map(variable => {
-      if (options.indented) {
-        return [
-          `@if variable-exists('${variable}') and type-of($${variable}) != map`,
-          `  .${variable}`,
-          `    value: $${variable}`,
-        ].join('\n');
-      }
-      return `
-          @if variable-exists('${variable}')
-            and type-of($${variable}) != map {
-              .${variable} { value: $${variable} };
-          }`;
-    })
-    .join('\n');
-
-  return asClasses;
+function removeLeadingDot(str) {
+  return str.replace(/^\.?/, '');
 }
 
-function compileToCSS(content, options) {
-  const separator = options.indented
-    ? [`.separator-${generateId()}`, '  width: 100%'].join('\n')
-    : `.separator-${generateId()} { width: 100% }`;
+function extractValues(css, camelize) {
+  const ast = parse(css);
 
-  const variables = getVariables(content);
+  const variables = ast.stylesheet.rules.reduce((result, rule) => {
+    const name = removeLeadingDot(get(rule, 'selectors[0]'));
+    const value = get(rule, 'declarations[0].value');
 
-  const evaluationSass = constructEvaluationSass(variables, options);
+    // eslint-disable-next-line no-param-reassign
+    result[camelize ? camelCase(name) : name] = value;
 
-  if (options.cwd) {
-    process.chdir(options.cwd);
-  }
-  const css = nodeSass
-    .renderSync({
-      data: [content, separator, evaluationSass].join('\n'),
-      outputStyle: 'compact',
-      indentedSyntax: Boolean(options.indented),
-    })
-    .css.toString();
+    return result;
+  }, {});
 
-  return last(css.split(separator));
+  return variables;
 }
 
-module.exports = function parseVariables(content, passedOptions = {}) {
+module.exports = function parseVariables(sass, passedOptions = {}) {
   const options = Object.assign({ camelCase: true }, passedOptions);
 
-  const css = compileToCSS(content, options);
+  const variableNames = getVariableNames(sass);
+
+  const css = renderValuesToCSS(sass, variableNames, options);
   if (!css) {
     return {};
   }
 
-  const regex = /\.([^\s]+)[\s{]+value:([^;}]+).*$/gm;
-  const matches = findAll(css, regex);
-  const variables = matches.reduce((acc, found) => {
-    const name = found[1].trim();
-    const value = found[2].trim();
-    const key = options.camelCase ? camelCase(name) : name;
-    // eslint-disable-next-line no-param-reassign
-    acc[key] = value;
-    return acc;
-  }, {});
+  const camelize = options.camelCase;
+  const variables = extractValues(css, camelize);
 
   return variables;
 };

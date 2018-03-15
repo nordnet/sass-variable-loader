@@ -2,7 +2,7 @@ const stripComments = require('strip-json-comments');
 const { uniq } = require('lodash');
 const { findAll } = require('./utils');
 
-function getVariables(content) {
+function getVariableNames(content) {
   const variableRegex = /\$([^:$})\s]+):/g;
 
   const matches = findAll(stripComments(content), variableRegex);
@@ -10,4 +10,4 @@ function getVariables(content) {
   return uniq(variables);
 }
 
-module.exports = getVariables;
+module.exports = getVariableNames;
