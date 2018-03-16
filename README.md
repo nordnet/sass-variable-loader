@@ -7,9 +7,9 @@ Parses **variables** from **sass**, evaluates their values with [node-sass](http
 ### Features
 
 * Returns only **top-level** variables (obviously).
-* Only "**plain**" variables; discards _maps_. Sorry about that.
+* Emits both "plain" variables and **maps**. Maps are represented as nested objects.
 * By default "**camelizes**" variable names. Can be changed through [options](#options).
-* Returns only variables from the imported file, but follows `@import`s to evaluate dependent values.
+* Returns only variables from the _imported file itself_, but follows `@import`s to evaluate dependent values.
 * Supports both **scss** and **indented** syntax.
 * **Reliable**. Thoroughly tested.
 
@@ -19,7 +19,11 @@ Parses **variables** from **sass**, evaluates their values with [node-sass](http
 {
   tagColor: "#409EFF",
   tagBorder: "rgba(64, 158, 255, 0.2)",
-  tagBorderRadius: "4px"
+  tagBorderRadius: "4px",
+  someMap: {
+    key1: "value1"
+    key2: "value2"
+  }
 }
 ```
 
@@ -28,6 +32,8 @@ Parses **variables** from **sass**, evaluates their values with [node-sass](http
 `npm i sass-variable-parser -D`
 
 ## Usage as a Webpack loader
+
+No need to touch webpack config. Loaders can be used inline. Just install devDependency and go ahead. Two exclamation marks disable for this import all loaders and preloaders specified in the webpack configuration.
 
 ```javascript
 import variables from '!!sass-variable-parser!./_variables.scss';
@@ -93,7 +99,7 @@ When using as a parser pass options object as the second parameter to `parse` me
 
 ## Why fork
 
-It's a complete rewrite of the original `sass-variable-loader`. That had many bugs and seemed not to be actively maintained. But thanks for the directions anyway!
+It's a complete rewrite of the original `sass-variable-loader`. That had many bugs and seemed not to be actively maintained. But thanks for the directions!
 
 ## License
 
