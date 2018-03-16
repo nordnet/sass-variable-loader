@@ -8,18 +8,58 @@ function removeLeadingDot(str) {
   return str.replace(/^\.?/, '');
 }
 
-function extractValues(css, camelize) {
+function removeMapTail(str) {
+  return str.replace(/\[is-map\]$/, '');
+}
+
+function unquote(str) {
+  return str.replace(/^"(.*)"$/, '$1');
+}
+
+function readMapValue(rule) {
+  return rule.declarations.reduce(
+    (result, declaration) =>
+      Object.assign({}, result, { [declaration.property]: declaration.value }),
+    {},
+  );
+}
+
+function nameFromSelector(selector, camelize) {
+  let name = removeLeadingDot(selector);
+  name = removeMapTail(name);
+  if (camelize) {
+    name = camelCase(name);
+  }
+  return name;
+}
+
+function formatMapKey(key, camelize) {
+  let formatted = unquote(key);
+  if (camelize) {
+    formatted = camelCase(formatted);
+  }
+  return formatted;
+}
+
+function readValues(css, camelize) {
   const ast = parse(css);
 
-  const variables = ast.stylesheet.rules.reduce((result, rule) => {
-    const name = removeLeadingDot(get(rule, 'selectors[0]'));
-    const value = get(rule, 'declarations[0].value');
+  const variables = {};
 
-    // eslint-disable-next-line no-param-reassign
-    result[camelize ? camelCase(name) : name] = value;
+  ast.stylesheet.rules.forEach(rule => {
+    const selector = get(rule, 'selectors[0]');
+    const name = nameFromSelector(selector, camelize);
 
-    return result;
-  }, {});
+    if (selector.endsWith('[is-map]')) {
+      const map = variables[name] || {};
+      const { key, value } = readMapValue(rule);
+      map[formatMapKey(key, camelize)] = unquote(value);
+      variables[name] = map;
+    } else {
+      const value = get(rule, 'declarations[0].value');
+      variables[name] = value;
+    }
+  });
 
   return variables;
 }
@@ -35,7 +75,7 @@ module.exports = function parseVariables(sass, passedOptions = {}) {
   }
 
   const camelize = options.camelCase;
-  const variables = extractValues(css, camelize);
+  const variables = readValues(css, camelize);
 
   return variables;
 };

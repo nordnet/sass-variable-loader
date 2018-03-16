@@ -1,28 +1,22 @@
 /* eslint-disable max-len */
+const { readFileSync } = require('fs');
+const path = require('path');
 const nodeSass = require('node-sass');
 const { last } = require('lodash');
+const Handlebars = require('handlebars');
 const { generateId } = require('./utils');
 
-function renderVariableIndented(name) {
-  return [
-    `@if variable-exists('${name}') and type-of($${name}) != map`,
-    `  .${name}`,
-    `    value: $${name}`,
-  ].join('\n');
-}
+const compileTemplate = filename =>
+  Handlebars.compile(readFileSync(path.join(__dirname, filename), 'utf8'));
 
-function renderVariableScss(name) {
-  return `@if variable-exists('${name}')
-            and type-of($${name}) != map {
-              .${name} { value: $${name} };
-          }`;
-}
+const renderIndented = compileTemplate('variable.sass');
+const renderScss = compileTemplate('variable.scss');
 
 function constructEvaluationSass(variableNames, indented) {
   const asClasses = variableNames
-    .map(variable => {
-      const fn = indented ? renderVariableIndented : renderVariableScss;
-      return fn(variable);
+    .map(name => {
+      const fn = indented ? renderIndented : renderScss;
+      return fn({ name });
     })
     .join('\n');
 

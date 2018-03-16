@@ -13,7 +13,12 @@
     "type": "git",
     "url": "https://github.com/nordnet/sass-variable-loader"
   },
-  "keywords": ["nordnet", "sass", "variable", "loader"],
+  "keywords": [
+    "nordnet",
+    "sass",
+    "variable",
+    "loader"
+  ],
   "author": "Gustaf Zetterlund <gustaf.zetterlund@nordnet.se>",
   "license": "MIT",
   "bugs": {
@@ -22,6 +27,7 @@
   "homepage": "https://github.com/nordnet/sass-variable-loader/#readme",
   "dependencies": {
     "css": "^2.2.1",
+    "handlebars": "^4.0.11",
     "loader-utils": "^1.1.0",
     "lodash": "^4.17.5",
     "node-sass": "^4.7.2",
