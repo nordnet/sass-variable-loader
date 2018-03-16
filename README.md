@@ -29,28 +29,28 @@ Parses **variables** from **sass**, evaluates their values with [node-sass](http
 
 ## Installation
 
-`npm i sass-variable-parser -D`
+`npm i sass-variable-loader -D`
 
 ## Usage as a Webpack loader
 
 No need to touch webpack config. Loaders can be used inline. Just install devDependency and go ahead. Two exclamation marks disable for this import all loaders and preloaders specified in the webpack configuration.
 
 ```javascript
-import variables from '!!sass-variable-parser!./_variables.scss';
+import variables from '!!sass-variable-loader!./_variables.scss';
 // => returns all the variables in _variables.scss as an object with each variable name camelCased
 ```
 
 Without camel-casing:
 
 ```javascript
-import variables from '!!sass-variable-parser?-camelCase!./_variables.scss';
+import variables from '!!sass-variable-loader?-camelCase!./_variables.scss';
 ```
 
 ## Usage as a parser
 
 ```javascript
 const path = require('path');
-const { parse } = require('sass-variable-parser');
+const { parse } = require('sass-variable-loader');
 
 const options = {
   // defaults to true
@@ -96,10 +96,6 @@ When using as a parser pass options object as the second parameter to `parse` me
 | camelCase | true                                  | Whether to camelize variable names                                                                               |
 | cwd       | Webpack's context when used as loader | Current working directory from which @import paths are calculated. Typically not needed when used as loader      |
 | indented  | false                                 | Whether the loaded sass is in indented syntax or not. When used as loader is auto-calculated from file extension |
-
-## Why fork
-
-It's a complete rewrite of the original `sass-variable-loader`. That had many bugs and seemed not to be actively maintained. But thanks for the directions!
 
 ## License
 
