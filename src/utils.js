@@ -1,3 +1,5 @@
+const { camelCase, mapKeys, forEach } = require('lodash');
+
 // Finds all mathes of regex in a string
 function findAll(str, regex) {
   const result = [];
@@ -25,8 +27,19 @@ function delay(ms) {
   });
 }
 
+function camelizeDeep(object) {
+  const newObj = mapKeys(object, (value, key) => camelCase(key));
+  forEach(newObj, (value, key) => {
+    if (typeof value === 'object') {
+      newObj[key] = camelizeDeep(value);
+    }
+  });
+  return newObj;
+}
+
 module.exports = {
   findAll,
   generateId,
   delay,
+  camelizeDeep,
 };
