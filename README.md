@@ -1,53 +1,101 @@
-# Sass variable loader for webpack
+# Sass variable parser and loader for webpack
 
-> Parses your Sass variables and returns an object containing each variable camelCased and the end value as it would be in CSS.
->
-> That means full support for Sass' lighten, darken, mix etc.
+> Works as a **Webpack loader** or can be used as **parser** in Node.js
 
-**Input:**
-``` scss
-$gray-base: #000 !default;
-$gray-darker: lighten($gray-base, 13.5%) !default; // #222
-$gray-dark: lighten($gray-base, 20%) !default; // #333
-$gray: lighten($gray-base, 33.5%) !default; // #555
-$gray-light: lighten($gray-base, 46.7%) !default; // #777
-$gray-lighter: lighten($gray-base, 93.5%) !default; // #eee
-```
+Parses **variables** from **sass**, evaluates their values with [node-sass](https://github.com/sass/node-sass) and returns the result as a Javascript **object**.
 
-**Result:**
-``` javascript
+### Features
+
+* Returns only **top-level** variables (obviously).
+* Emits both "plain" variables and **maps**. Maps are represented as nested objects.
+* By default "**camelizes**" variable names. Can be changed through [options](#options).
+* Returns only variables from the _imported file itself_, but follows `@import`s to evaluate dependent values.
+* Supports both **scss** and **indented** syntax.
+* **Reliable**. Thoroughly tested.
+
+### Result example
+
+```javascript
 {
-  grayBase: '#000',
-  grayDarker: '#222222',
-  grayDark: '#333333',
-  gray: '#555555',
-  grayLight: '#777777',
-  grayLighter: '#eeeeee'
+  tagColor: "#409EFF",
+  tagBorder: "rgba(64, 158, 255, 0.2)",
+  tagBorderRadius: "4px",
+  someMap: {
+    key1: "value1"
+    key2: "value2"
+  }
 }
 ```
 
 ## Installation
 
-`npm install --save-dev sass-variable-loader`
+`npm i sass-variable-loader -D`
 
-## Usage
+## Usage as a Webpack loader
 
-``` javascript
-import variables from 'sass-variable-loader!./_variables.scss';
+No need to touch webpack config. Loaders can be used inline. Just install devDependency and go ahead. Two exclamation marks disable for this import all loaders and preloaders specified in the webpack configuration.
+
+```javascript
+import variables from '!!sass-variable-loader!./_variables.scss';
 // => returns all the variables in _variables.scss as an object with each variable name camelCased
 ```
-**Note:** If you've already defined loaders for Sass files in the configuration, you can override the [loader order](https://webpack.github.io/docs/loaders.html#loader-order) by writing `!!sass-variable-loader!./_variables.scss` to disable all loaders specified in the configuration for that module request.
+
+Without camel-casing:
+
+```javascript
+import variables from '!!sass-variable-loader?-camelCase!./_variables.scss';
+```
+
+## Usage as a parser
+
+```javascript
+const path = require('path');
+const { parse } = require('sass-variable-loader');
+
+const options = {
+  // defaults to true
+  camelCase: false,
+  // optional, only if there are @imports with relative paths
+  cwd: path.resolve(__dirname, 'node_modules/bulma/sass/utilities'),
+  // true means indented sass syntax, defaults to false ('scss' syntax)
+  indented: true,
+};
+
+const variables = parse(
+  `
+@import "initial-variables.sass"
+
+$primary: $turquoise !default
+$info: $cyan !default
+
+$family-primary: $family-monospace`,
+  options,
+);
+```
+
+`variables` would be:
+
+```javascript
+{
+  "primary": "#00d1b2",
+  "info": "#209cee",
+  "family-primary": "monospace"
+}
+```
+
+Check out `test` folder for more exmaples
 
 ## Options
 
-You can pass options to the loader via [query parameters](http://webpack.github.io/docs/using-loaders.html#query-parameters).
+When using as a loader pass through query string ([see how](https://github.com/webpack/loader-utils#parsequery)).
 
-### preserveVariableNames
+When using as a parser pass options object as the second parameter to `parse` method.
 
-``` javascript
-import variables from 'sass-variable-loader?preserveVariableNames!./_variables.scss';
-// => returns all the variables in _variables.scss as an object with each variable name left intact
-```
+| Option    | Default                               | Description                                                                                                      |
+| --------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| camelCase | true                                  | Whether to camelize variable names                                                                               |
+| cwd       | Webpack's context when used as loader | Current working directory from which @import paths are calculated. Typically not needed when used as loader      |
+| indented  | false                                 | Whether the loaded sass is in indented syntax or not. When used as loader is auto-calculated from file extension |
 
 ## License
 

@@ -1,4 +1,7 @@
 .DS_Store
 node_modules
 npm-debug.log
-dist
+package-lock.json
+.vscode
+test/webpack/dist
+false

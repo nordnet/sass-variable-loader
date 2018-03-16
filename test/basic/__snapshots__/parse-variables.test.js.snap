@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parseVariables() indented sass should return an object with a key "one" 1`] = `
+Object {
+  "one": "123",
+  "x": "123",
+}
+`;
+
+exports[`parseVariables() with comments should return an object with a key "one" 1`] = `
+Object {
+  "one": "123",
+  "x": "123",
+}
+`;
+
+exports[`parseVariables() without comments should contain "gray-base" when options={"camelCase":false} 1`] = `
+Object {
+  "gray": "#555555",
+  "gray-base": "#000",
+  "gray-dark": "#333333",
+  "gray-darker": "#222222",
+  "gray-light": "#777777",
+  "gray-lighter": "#eeeeee",
+}
+`;
+
+exports[`parseVariables() without comments should contain "grayBase" 1`] = `
+Object {
+  "gray": "#555555",
+  "grayBase": "#000",
+  "grayDark": "#333333",
+  "grayDarker": "#222222",
+  "grayLight": "#777777",
+  "grayLighter": "#eeeeee",
+}
+`;

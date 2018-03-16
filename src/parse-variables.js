@@ -1,40 +1,62 @@
-import sass from 'node-sass';
-import camelCase from 'lodash.camelcase';
+/* eslint-disable max-len */
+const { parse } = require('css');
+const { get } = require('lodash');
+const getVariableNames = require('./get-variable-names');
+const renderValuesToCSS = require('./render-values-to-css');
+const { camelizeDeep } = require('./utils');
 
-function constructSassString(variables) {
-  const asVariables = variables
-    .map(variable => `$${variable.name}: ${variable.value};`)
-    .join('\n');
-  const asClasses = variables
-    .map(variable => `.${variable.name} { value: ${variable.value} }`)
-    .join('\n');
-
-  return `${asVariables}\n${asClasses}`;
+function removeLeadingDot(str) {
+  return str.replace(/^\.?/, '');
 }
 
-export default function parseVariables(variables, opts = {}) {
-  const result = sass.renderSync({
-    data: constructSassString(variables),
-    outputStyle: 'compact',
-  }).css.toString();
+function removeMapTail(str) {
+  return str.replace(/\[is-map\]$/, '');
+}
 
-  const parsedVariables = result.split(/\n/)
-    .filter(line => line && line.length)
-    .map(variable => {
-      const [, name, value] = /\.(.+) { value: (.+); }/.exec(variable);
-      const obj = {};
+function unquote(str) {
+  return str.replace(/^"(.*)"$/, '$1');
+}
 
-      if (opts.preserveVariableNames) {
-        obj[name] = value;
-        return obj;
-      }
+function nameFromSelector(selector) {
+  let name = removeLeadingDot(selector);
+  name = removeMapTail(name);
+  return name;
+}
 
-      obj[camelCase(name)] = value;
-      return obj;
-    });
+function readValues(css) {
+  const ast = parse(css);
 
-  if (!parsedVariables.length) {
+  const variables = {};
+
+  ast.stylesheet.rules.forEach(rule => {
+    const selector = get(rule, 'selectors[0]');
+    const name = nameFromSelector(selector);
+    const value = get(rule, 'declarations[0].value');
+
+    if (selector.endsWith('[is-map]')) {
+      const map = variables[name] || {};
+      const key = get(rule, 'declarations[0].property');
+      map[key] = unquote(value);
+      variables[name] = map;
+    } else {
+      variables[name] = value;
+    }
+  });
+
+  return variables;
+}
+
+module.exports = function parseVariables(sass, passedOptions = {}) {
+  const options = Object.assign({ camelCase: true }, passedOptions);
+
+  const variableNames = getVariableNames(sass);
+
+  const css = renderValuesToCSS(sass, variableNames, options);
+  if (!css) {
     return {};
   }
-  return Object.assign.apply(this, parsedVariables);
-}
+
+  const variables = readValues(css);
+
+  return options.camelCase ? camelizeDeep(variables) : variables;
+};
