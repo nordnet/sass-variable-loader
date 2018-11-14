@@ -57,6 +57,30 @@ $x: $one;
     });
 })
 
+context('maps', function() {
+  const sass = '$map: (one: 1, two: #eee);';
+  const variables = getVariables(sass);
+
+  describe('getVariables()', function() {
+    it('should return an array with 1 item', () => {
+      console.log(variables);
+      expect(variables).to.be.a('array');
+      expect(variables).to.have.length(1);
+    });
+  });
+
+  describe('parseVariables()', function() {
+    it('should return maps', function() {
+      const result = parseVariables(variables);
+      expect(result.map).to.be.a('object');
+      expect(result.map).to.include.keys('one');
+      expect(result.map).to.include.keys('two');
+      expect(result.map.one).to.equal('1'); // may want to parse ints?
+      expect(result.map.two).to.equal('#eee');
+    });
+  });
+});
+
 context('.sass format', function() {
     const sass = `$one: 123
 $x: $one
